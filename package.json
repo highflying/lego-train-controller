@@ -1,0 +1,15 @@
+{
+  "name": "lego-controller",
+  "version": "1.0.0",
+  "description": "Bluetooth LEGO controllet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben Rogers <ben@bdr.org>",
+  "dependencies": {
+    "@highflying/dev-tools": "^1.1.2",
+    "keypress": "^0.2.1",
+    "node-poweredup": "^1.1.9"
+  }
+}
