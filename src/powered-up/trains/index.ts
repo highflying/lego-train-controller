@@ -1,4 +1,5 @@
 import passenger from "./passenger";
+export { ITrain, IAction } from "./interfaces";
 
 const trains = [passenger];
 

@@ -1,40 +1,10 @@
-interface IArrive {
-  type: "arrive";
-}
-
-interface IDepart {
-  type: "depart";
-  speed: number;
-}
-
-interface IAccelerate {
-  type: "accelerate";
-  delta: number;
-}
-
-interface ISetSpeed {
-  type: "set-speed";
-  speed: number;
-}
-
-interface ISetColour {
-  type: "set-colour";
-  red: number;
-  green: number;
-  blue: number;
-}
-
-interface ITrain {
-  uuid: string;
-  name: string;
-  keys: {
-    [index: string]: IArrive | IDepart | IAccelerate | ISetColour | ISetSpeed;
-  };
-}
+import { ITrain } from "./interfaces";
 
 const train: ITrain = {
   uuid: "e9908e0653b0419ebe2455d3f7e7d9fa",
   name: "Passenger Train",
+  maxSpeed: 60,
+  minSpeed: -60,
   keys: {
     d: {
       type: "depart",
@@ -50,6 +20,10 @@ const train: ITrain = {
     right: {
       type: "accelerate",
       delta: -20
+    },
+    m: {
+      type: "set-speed",
+      speed: 6666
     },
     space: {
       type: "set-speed",
@@ -86,8 +60,7 @@ const train: ITrain = {
       blue: 255
     },
     e: {
-      type: "set-speed",
-      speed: 0
+      type: "emergency-stop"
     }
   }
 };
