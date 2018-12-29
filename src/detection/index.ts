@@ -1,5 +1,8 @@
 import { Gpio } from "pigpio";
 import { EventEmitter } from "events";
+import Debug from "debug";
+
+const debug = Debug("detection");
 
 const ONE_SECOND = 1000;
 const MIN_DETECTION_INTERVAL = 1 * ONE_SECOND;
@@ -33,6 +36,8 @@ class Sensors extends EventEmitter {
   }
 
   private initSensor(sensor: ISensor) {
+    debug(`Initialising sensor ${sensor.pin}/${sensor.id}`);
+
     const button = new Gpio(sensor.pin, {
       mode: Gpio.INPUT,
       pullUpDown: Gpio.PUD_DOWN,
@@ -43,13 +48,18 @@ class Sensors extends EventEmitter {
     button.on("interrupt", (level: boolean) => {
       const detected = !level;
 
+      debug(`Detected event for ${sensor.id}, value=${level}`);
+
       if (detected) {
         const timestamp = Date.now();
 
         if (timestamp - lastDetected >= MIN_DETECTION_INTERVAL) {
           const event: IDetectionEvent = { timestamp, id: sensor.id };
           this.emit("detection", event);
-          console.log(`${new Date().toISOString()} ${level}`);
+
+          debug(`Emitting detection event for ${sensor.id}`);
+        } else {
+          debug(`Previous detection was too recent for ${sensor.id}`);
         }
 
         lastDetected = timestamp;
