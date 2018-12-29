@@ -2,7 +2,7 @@ import { ServerResponse, ServerRequest } from "microrouter";
 import { send } from "micro";
 import { getAllFromRegistry } from "../powered-up/registry";
 
-export default async (req: ServerRequest, res: ServerResponse) => {
+export default async (_req: ServerRequest, res: ServerResponse) => {
   console.log("getTrains");
 
   const list = getAllFromRegistry().map(train => ({
