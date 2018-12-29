@@ -1,7 +1,7 @@
 import { ITrain } from "./interfaces";
 
 const train: ITrain = {
-  uuid: "e9908e0653b0419ebe2455d3f7e7d9fa",
+  uuid: "90842b0a568f",
   name: "Passenger Train",
   maxSpeed: 80,
   minSpeed: -60,
