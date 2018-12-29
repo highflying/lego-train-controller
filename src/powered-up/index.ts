@@ -1,8 +1,8 @@
 import * as PoweredUP from "@highflying/node-poweredup";
 // import keypress from "keypress";
 import trains from "./trains";
-import handleAction from "./actions";
-import controllerFactory, { IController } from "./controller";
+// import handleAction from "./actions";
+import controllerFactory from "./controller";
 import { addToRegistry } from "./registry";
 
 // keypress(process.stdin);
