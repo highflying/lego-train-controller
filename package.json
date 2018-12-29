@@ -20,11 +20,15 @@
     "@types/noble": "0.0.38",
     "@types/pigpio": "^1.2.0",
     "debug": "^4.1.1",
+    "@types/recompose": "^0.30.2",
     "keypress": "^0.2.1",
     "micro": "^9.3.3",
+    "micro-cors": "^0.1.1",
     "microrouter": "^3.1.3",
     "pigpio": "^1.2.1",
-    "rpi-gpio": "^2.1.2"
+    "rpi-gpio": "^2.1.2",
+    "recompose": "^0.30.0",
+    "remove": "^0.1.5"
   },
   "devDependencies": {
     "@types/micro": "^7.3.3",

@@ -16,7 +16,11 @@ export default async (req: ServerRequest, res: ServerResponse) => {
   const stats = {
     uuid: train.uuid,
     name: train.name,
-    speed: train.getSpeed()
+    speed: train.getSpeed(),
+    batteryLevel: train.batteryLevel(),
+    rssi: train.rssi(),
+    current: train.current(),
+    status: train.status()
   };
 
   return send(res, 200, stats);

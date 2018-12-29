@@ -26,8 +26,6 @@ const start = async () => {
 
       addToRegistry(controller);
 
-      controller.stats();
-
       // process.stdin.on("keypress", async (_ch: any, key: any) => {
       //   try {
       //     if (!key) {
