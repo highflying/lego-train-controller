@@ -30,7 +30,8 @@ export default async (req: ServerRequest, res: ServerResponse) => {
     onDetection("platform2", async event => {
       console.log(event);
       const currentSpeed = train.getSpeed();
-      await train.setSpeed(0);
+      await train.setSpeed(-1 * currentSpeed);
+      // await train.setSpeed(0);
       await pause(5000);
       await train.setSpeed(currentSpeed);
     });
