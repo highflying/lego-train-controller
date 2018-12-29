@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./dist/test-gpio3.js",
+    "clean": "rm -rf ./dist",
     "build": "yotta-build-app",
     "compile": "yotta-compile-app",
     "test": "echo \"Error: no test specified\" && exit 1"
