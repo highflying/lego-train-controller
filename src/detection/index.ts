@@ -37,9 +37,13 @@ class Sensors extends EventEmitter {
     });
 
     button.on("interrupt", (level: boolean) => {
-      const event: IDetectionEvent = { timestamp: Date.now(), id: sensor.id };
-      this.emit("detection", event);
-      console.log(`${new Date().toISOString()} ${level}`);
+      const detected = !level;
+
+      if (detected) {
+        const event: IDetectionEvent = { timestamp: Date.now(), id: sensor.id };
+        this.emit("detection", event);
+        console.log(`${new Date().toISOString()} ${level}`);
+      }
     });
   }
 }
