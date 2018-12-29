@@ -4,7 +4,7 @@
   "description": "Bluetooth LEGO controllet",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dist/test-gpio3.js",
+    "start": "pm2 startOrRestart ./ecosystem.config.js",
     "clean": "rm -rf ./dist",
     "build": "yotta-build-app",
     "compile": "yotta-compile-app",
