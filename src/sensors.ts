@@ -15,6 +15,7 @@ export const initSensors = () => {
     const callback = registry.get(event.id);
 
     if (callback) {
+      registry.delete(event.id);
       callback(event);
     }
   });
