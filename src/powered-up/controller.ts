@@ -3,11 +3,14 @@ import { ITrain } from "./trains";
 export interface IController {
   uuid: string;
   name: string;
+  status: () => string;
   emergencyStop: () => any;
   setSpeed: (speed: number, ms?: number) => any;
   getSpeed: () => number;
   setColour: (red: number, green: number, blue: number) => any;
-  stats: () => void;
+  batteryLevel: () => number;
+  rssi: () => number;
+  current: () => number;
 }
 
 const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -17,11 +20,12 @@ const controllerFactory = async (
   train: ITrain
 ): Promise<IController> => {
   let prevSpeed = 0;
+  let status: string = "stopped";
   const { maxSpeed = 100, minSpeed = -100 } = train;
 
   await hub.setName(train.name.slice(0, 14));
 
-  const setSpeed = (speed: number, ms: number = 0) => {
+  const setSpeed = (speed: number, ms?: number) => {
     if (speed > maxSpeed) {
       speed = maxSpeed;
     } else if (speed < minSpeed) {
@@ -32,17 +36,26 @@ const controllerFactory = async (
       return;
     }
 
-    console.log(`Changing speed from ${prevSpeed} to ${speed} in ${ms} ms`);
-    const result = hub.rampMotorSpeed("A", prevSpeed, speed, ms);
+    const duration =
+      ms !== undefined && ms !== null ? ms : Math.abs(speed - prevSpeed) * 100;
+
+    console.log(
+      `Changing speed from ${prevSpeed} to ${speed} in ${duration} ms`
+    );
+    status = prevSpeed < speed ? "accelerating" : "decelerating";
+    const result = hub.rampMotorSpeed("A", prevSpeed, speed, duration);
 
     prevSpeed = speed;
 
-    return result;
+    return result.then(() => {
+      status = speed ? "running" : "stopped";
+    });
   };
 
   return {
     uuid: hub.uuid,
     name: train.name,
+    status: () => status,
     emergencyStop: async () => {
       await setSpeed(-20, 0);
       await pause((prevSpeed / 60) * 350);
@@ -50,12 +63,9 @@ const controllerFactory = async (
     },
     setSpeed,
     setColour: hub.setLEDRGB.bind(hub),
-    stats: () => {
-      console.log(`Hub name ${hub.name}`);
-      console.log(`Battery level ${hub.batteryLevel}`);
-      console.log(`Signal strength ${hub.rssi}`);
-      console.log(`Current ${hub.current}`);
-    },
+    batteryLevel: () => hub.batteryLevel,
+    rssi: () => hub.rssi,
+    current: () => hub.current,
     getSpeed: () => prevSpeed
   };
 };

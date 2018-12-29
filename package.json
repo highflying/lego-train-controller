@@ -9,10 +9,14 @@
   "author": "Ben Rogers <ben@bdr.org>",
   "dependencies": {
     "@highflying/dev-tools": "^1.1.2",
+    "@types/recompose": "^0.30.2",
     "keypress": "^0.2.1",
     "micro": "^9.3.3",
+    "micro-cors": "^0.1.1",
     "microrouter": "^3.1.3",
-    "node-poweredup": "^1.1.9"
+    "node-poweredup": "^1.1.9",
+    "recompose": "^0.30.0",
+    "remove": "^0.1.5"
   },
   "devDependencies": {
     "@types/micro": "^7.3.3",
