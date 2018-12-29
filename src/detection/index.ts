@@ -1,6 +1,9 @@
 import { Gpio } from "pigpio";
 import { EventEmitter } from "events";
 
+const ONE_SECOND = 1000;
+const MIN_DETECTION_INTERVAL = 1 * ONE_SECOND;
+
 interface ISensor {
   id: string;
   pin: number;
@@ -36,13 +39,20 @@ class Sensors extends EventEmitter {
       edge: Gpio.EITHER_EDGE
     });
 
+    let lastDetected = 0;
     button.on("interrupt", (level: boolean) => {
       const detected = !level;
 
       if (detected) {
-        const event: IDetectionEvent = { timestamp: Date.now(), id: sensor.id };
-        this.emit("detection", event);
-        console.log(`${new Date().toISOString()} ${level}`);
+        const timestamp = Date.now();
+
+        if (timestamp - lastDetected >= MIN_DETECTION_INTERVAL) {
+          const event: IDetectionEvent = { timestamp, id: sensor.id };
+          this.emit("detection", event);
+          console.log(`${new Date().toISOString()} ${level}`);
+        }
+
+        lastDetected = timestamp;
       }
     });
   }
