@@ -10,7 +10,7 @@
     "compile": "yotta-compile-app",
     "test": "echo \"Error: no test specified\" && exit 1",
     "predeploy": "git push",
-    "deploy": "ssh -t rasp2.yottabrick.com '/bin/bash -l -c \"cd ~/stash/lego-train-controller && git pull && npm run build\"'"
+    "deploy": "ssh -t rasp2.yottabrick.com '/bin/bash -l -c \"cd ~/stash/lego-train-controller && git pull && env && npm run build\"'"
   },
   "author": "Ben Rogers <ben@bdr.org>",
   "dependencies": {
