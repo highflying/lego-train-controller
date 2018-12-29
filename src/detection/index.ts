@@ -16,6 +16,10 @@ const sensors: ISensor[] = [
   {
     id: "platform1",
     pin: 2
+  },
+  {
+    id: "platform2",
+    pin: 3
   }
 ];
 
