@@ -4,6 +4,9 @@
   "description": "Bluetooth LEGO controllet",
   "main": "index.js",
   "scripts": {
+    "start": "node ./dist/test-gpio3.js",
+    "build": "yotta-build-app",
+    "compile": "yotta-compile-app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ben Rogers <ben@bdr.org>",
