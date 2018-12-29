@@ -16,6 +16,8 @@
   "dependencies": {
     "@highflying/dev-tools": "^1.1.2",
     "@highflying/node-poweredup": "^1.1.9",
+    "@types/noble": "0.0.38",
+    "@types/pigpio": "^1.2.0",
     "keypress": "^0.2.1",
     "micro": "^9.3.3",
     "microrouter": "^3.1.3",
