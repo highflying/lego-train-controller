@@ -4,7 +4,10 @@ interface IDetectionCallback {
   (event: IDetectionEvent): void;
 }
 
-const registry = new Map<string, IDetectionCallback>();
+const registry = {
+  detection: new Map<string, IDetectionCallback>(),
+  clear: new Map<string, IDetectionCallback>()
+};
 
 export const initSensors = () => {
   const sensors = new Sensors();
@@ -12,14 +15,28 @@ export const initSensors = () => {
   sensors.on("detection", (event: IDetectionEvent) => {
     console.log(`${event.id} detected at ${event.timestamp}`);
 
-    const callback = registry.get(event.id);
+    const callback = registry.detection.get(event.id);
 
     if (callback) {
-      registry.delete(event.id);
+      registry.detection.delete(event.id);
+      callback(event);
+    }
+  });
+
+  sensors.on("clear", (event: IDetectionEvent) => {
+    console.log(`${event.id} detected at ${event.timestamp}`);
+
+    const callback = registry.clear.get(event.id);
+
+    if (callback) {
+      registry.clear.delete(event.id);
       callback(event);
     }
   });
 };
 
 export const onDetection = (id: string, callback: IDetectionCallback) =>
-  registry.set(id, callback);
+  registry.detection.set(id, callback);
+
+export const onClear = (id: string, callback: IDetectionCallback) =>
+  registry.clear.set(id, callback);

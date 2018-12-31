@@ -49,12 +49,19 @@ class Sensors extends EventEmitter {
     });
 
     let lastDetected = 0;
+    let timeout: NodeJS.Timer | null;
+
     button.on("interrupt", (level: boolean) => {
       const detected = !level;
 
       debug(`Detected event for ${sensor.id}, value=${level}`);
 
       if (detected) {
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+
         const timestamp = Date.now();
 
         if (timestamp - lastDetected >= MIN_DETECTION_INTERVAL) {
@@ -67,6 +74,10 @@ class Sensors extends EventEmitter {
         }
 
         lastDetected = timestamp;
+
+        timeout = setTimeout(() => {
+          this.emit("clear", { timestamp: Date.now(), id: sensor.id });
+        }, 2000);
       }
     });
   }
