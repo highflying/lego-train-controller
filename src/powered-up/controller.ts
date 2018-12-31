@@ -37,7 +37,7 @@ const controllerFactory = async (
     }
 
     const duration =
-      ms !== undefined && ms !== null ? ms : Math.abs(speed - prevSpeed) * 100;
+      ms !== undefined && ms !== null ? ms : Math.abs(speed - prevSpeed) * 50;
 
     console.log(
       `Changing speed from ${prevSpeed} to ${speed} in ${duration} ms`
