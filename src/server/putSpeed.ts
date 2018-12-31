@@ -30,7 +30,7 @@ export default async (req: ServerRequest, res: ServerResponse) => {
     console.log("Waiting for clear");
     await new Promise(resolve => onClear("platform1", resolve));
     console.log("Switching Point");
-    await switchPoint("siding", "curved");
+    await switchPoint("siding", "straight");
     console.log("Going forward");
     await train.setSpeed(40);
     console.log("Detecting");
