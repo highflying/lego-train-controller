@@ -76,6 +76,7 @@ class Sensors extends EventEmitter {
         lastDetected = timestamp;
 
         timeout = setTimeout(() => {
+          debug(`Emitting clear event for ${sensor.id}`);
           this.emit("clear", { timestamp: Date.now(), id: sensor.id });
         }, 2000);
       }
