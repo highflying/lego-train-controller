@@ -2,6 +2,7 @@ import { ServerResponse, ServerRequest } from "microrouter";
 import { send, createError } from "micro";
 import { getFromRegistry } from "../powered-up/registry";
 import { onDetection } from "../sensors";
+import { switchPoint } from "../power-functions";
 
 const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -22,10 +23,18 @@ export default async (req: ServerRequest, res: ServerResponse) => {
   } else if (emergencyStop === "1") {
     train.emergencyStop();
   } else if (action === "stopPlatform1") {
-    onDetection("platform1", event => {
-      console.log(event);
-      train.setSpeed(0);
-    });
+    await train.setSpeed(-30);
+    await pause(3000);
+    await switchPoint("siding", "curved");
+    await train.setSpeed(30);
+    await pause(3000);
+    await train.setSpeed(0);
+
+    // onDetection("platform1", event => {
+    //   console.log(event);
+    //   train.setSpeed(0);
+    //   // await train.setSpeed(-30);
+    // });
   } else if (action === "stopPlatform2") {
     onDetection("platform2", async event => {
       console.log(event);
