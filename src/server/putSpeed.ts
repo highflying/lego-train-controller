@@ -23,13 +23,21 @@ export default async (req: ServerRequest, res: ServerResponse) => {
   } else if (emergencyStop === "1") {
     train.emergencyStop();
   } else if (action === "stopPlatform1") {
+    console.log("Reversing");
     await train.setSpeed(-30);
+    console.log("Detecting");
     await new Promise(resolve => onDetection("platform1", () => resolve));
+    console.log("Waiting for clear");
     await new Promise(resolve => onClear("platform1", () => resolve));
+    console.log("Switching Point");
     await switchPoint("siding", "curved");
+    console.log("Going forward");
     await train.setSpeed(30);
+    console.log("Detecting");
     await new Promise(resolve => onDetection("platform1", () => resolve));
+    console.log("Waiting for clear");
     await new Promise(resolve => onClear("platform1", () => resolve));
+    console.log("Stopping");
     await train.setSpeed(0);
 
     // onDetection("platform1", event => {

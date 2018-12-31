@@ -24,7 +24,7 @@ export const initSensors = () => {
   });
 
   sensors.on("clear", (event: IDetectionEvent) => {
-    console.log(`${event.id} detected at ${event.timestamp}`);
+    console.log(`${event.id} cleared at ${event.timestamp}`);
 
     const callback = registry.clear.get(event.id);
 
