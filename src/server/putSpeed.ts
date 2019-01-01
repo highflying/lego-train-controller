@@ -4,8 +4,7 @@ import { getFromRegistry } from "../powered-up/registry";
 import { onDetection, onClear } from "../sensors";
 import { switchPoint } from "../power-functions";
 import Bluebird from "bluebird";
-
-// const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import { pause } from "../utils";
 
 export default async (req: ServerRequest, res: ServerResponse) => {
   const { uuid } = req.params;
@@ -48,6 +47,8 @@ export default async (req: ServerRequest, res: ServerResponse) => {
       { type: "setSpeed", id: uuid, speed: 60 },
       { type: "onDetection", id: "platform1" },
       { type: "setSpeed", id: uuid, speed: 40 },
+      { type: "pause", ms: 1000 },
+      { type: "setSpeed", id: uuid, speed: 30 },
       { type: "onClear", id: "platform1" },
       { type: "setSpeed", id: uuid, speed: 0 }
     ]);
@@ -73,7 +74,16 @@ interface ISetSpeedAction {
   speed: number;
 }
 
-type IAction = ISwitchPointAction | IDetectionAction | ISetSpeedAction;
+interface IPauseAction {
+  type: "pause";
+  ms: number;
+}
+
+type IAction =
+  | ISwitchPointAction
+  | IDetectionAction
+  | ISetSpeedAction
+  | IPauseAction;
 type IActions = Array<IAction>;
 
 const runActions = async (actions: IActions) =>
@@ -93,6 +103,8 @@ const runAction = async (action: IAction) => {
     }
   } else if (action.type === "switchPoint") {
     await switchPoint(action.id, action.setting);
+  } else if (action.type === "pause") {
+    await pause(action.ms);
   }
 
   return;

@@ -1,4 +1,5 @@
 import lirc_node from "lircv0.9.4_node";
+import { pause } from "../utils";
 
 lirc_node.init();
 
@@ -17,8 +18,6 @@ const points: Array<IPoint> = [
 ];
 
 const remote = "LEGO_Single_Output";
-
-const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 type Direction = "straight" | "curved";
 interface IPointFunc {

@@ -1,5 +1,6 @@
 import { ITrain } from "./trains";
 import Debug from "debug";
+import { pause } from "../utils";
 
 const debug = Debug("controller");
 
@@ -15,8 +16,6 @@ export interface IController {
   rssi: () => number;
   current: () => number;
 }
-
-const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const controllerFactory = async (
   hub: any,
