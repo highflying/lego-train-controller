@@ -1,4 +1,7 @@
 import Sensors, { IDetectionEvent } from "./detection";
+import Debug from "debug";
+
+const debug = Debug("sensors");
 
 interface IDetectionCallback {
   (event: IDetectionEvent): void;
@@ -13,7 +16,7 @@ export const initSensors = () => {
   const sensors = new Sensors();
 
   sensors.on("detection", (event: IDetectionEvent) => {
-    console.log(`${event.id} detected at ${event.timestamp}`);
+    debug(`${event.id} detected at ${event.timestamp}`);
 
     const callback = registry.detection.get(event.id);
 
@@ -24,7 +27,7 @@ export const initSensors = () => {
   });
 
   sensors.on("clear", (event: IDetectionEvent) => {
-    console.log(`${event.id} cleared at ${event.timestamp}`);
+    debug(`${event.id} cleared at ${event.timestamp}`);
 
     const callback = registry.clear.get(event.id);
 

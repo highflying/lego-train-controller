@@ -3,8 +3,6 @@ import { send, createError } from "micro";
 import { getFromRegistry } from "../powered-up/registry";
 
 export default async (req: ServerRequest, res: ServerResponse) => {
-  console.log("getTrain");
-
   const { uuid } = req.params;
 
   const train = getFromRegistry(uuid);

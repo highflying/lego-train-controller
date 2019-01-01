@@ -1,4 +1,7 @@
 import { ITrain } from "./trains";
+import Debug from "debug";
+
+const debug = Debug("controller");
 
 export interface IController {
   uuid: string;
@@ -39,9 +42,7 @@ const controllerFactory = async (
     const duration =
       ms !== undefined && ms !== null ? ms : Math.abs(speed - prevSpeed) * 50;
 
-    console.log(
-      `Changing speed from ${prevSpeed} to ${speed} in ${duration} ms`
-    );
+    debug(`Changing speed from ${prevSpeed} to ${speed} in ${duration} ms`);
     status = prevSpeed < speed ? "accelerating" : "decelerating";
     const result = hub.rampMotorSpeed("A", prevSpeed, speed, duration);
 
@@ -57,6 +58,7 @@ const controllerFactory = async (
     name: train.name,
     status: () => status,
     emergencyStop: async () => {
+      debug("Emergency Stop");
       await setSpeed(-20, 0);
       await pause((prevSpeed / 60) * 350);
       await setSpeed(0, 0);

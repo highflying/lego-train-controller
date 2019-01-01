@@ -2,6 +2,9 @@ import * as PoweredUP from "node-poweredup";
 import trains from "./trains";
 import controllerFactory from "./controller";
 import { addToRegistry } from "./registry";
+import Debug from "debug";
+
+const debug = Debug("poweredUp");
 
 const start = async () => {
   const poweredUP = new PoweredUP.PoweredUP();
@@ -14,7 +17,7 @@ const start = async () => {
         return;
       }
 
-      console.log(`Controlling train "${train.name}"`);
+      debug(`Controlling train "${train.name}"`);
 
       await hub.connect();
 

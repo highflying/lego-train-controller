@@ -3,8 +3,6 @@ import { send } from "micro";
 import { getAllFromRegistry } from "../powered-up/registry";
 
 export default async (_req: ServerRequest, res: ServerResponse) => {
-  console.log("getTrains");
-
   const list = getAllFromRegistry().map(train => ({
     uuid: train.uuid,
     name: train.name,
