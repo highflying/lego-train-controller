@@ -33,11 +33,14 @@ export default async (req: ServerRequest, res: ServerResponse) => {
     await new Promise(resolve => onClear("platform1", resolve));
     await train.setSpeed(0);
   } else if (action === "stopPlatform2") {
-    await train.setSpeed(-40);
-    await new Promise(resolve => onDetection("platform1", resolve));
-    await new Promise(resolve => onClear("platform1", resolve));
-    await switchPoint("siding", "straight");
-    await train.setSpeed(60);
+    await runActions([
+      { type: "switchPoint", id: "siding", setting: "curved" },
+      { type: "setSpeed", id: uuid, speed: -40 },
+      { type: "onDetection", id: "platform1" },
+      { type: "onClear", id: "platform1" },
+      { type: "switchPoint", id: "siding", setting: "straight" },
+      { type: "setSpeed", id: uuid, speed: 60 }
+    ]);
   } else if (action === "stopPlatform3") {
     await runActions([
       { type: "onClear", id: "platform1" },
