@@ -1,8 +1,14 @@
-import { ITrain } from "./trains";
 import Debug from "debug";
-import { pause } from "../utils";
+import { pause } from "../../utils";
 
 const debug = Debug("controller");
+
+export interface ITrain {
+  uuid: string;
+  name: string;
+  maxSpeed?: number;
+  minSpeed?: number;
+}
 
 export interface IController {
   uuid: string;

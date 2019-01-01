@@ -1,4 +1,4 @@
-import Sensors, { IDetectionEvent } from "./detection";
+import Sensors, { IDetectionEvent, ISensor } from "../../hardware/detection";
 import Debug from "debug";
 
 const debug = Debug("sensors");
@@ -12,8 +12,8 @@ const registry = {
   clear: new Map<string, IDetectionCallback>()
 };
 
-export const initSensors = () => {
-  const sensors = new Sensors();
+const initSensors = (config: ISensor[]) => {
+  const sensors = new Sensors(config);
 
   sensors.on("detection", (event: IDetectionEvent) => {
     debug(`${event.id} detected at ${event.timestamp}`);
@@ -43,3 +43,5 @@ export const onDetection = (id: string, callback: IDetectionCallback) =>
 
 export const onClear = (id: string, callback: IDetectionCallback) =>
   registry.clear.set(id, callback);
+
+export default initSensors;

@@ -1,11 +1,11 @@
 import { ServerResponse, ServerRequest } from "microrouter";
 import { send, createError } from "micro";
-import { getFromRegistry } from "../powered-up/registry";
+import { getTrain } from "../things/trains";
 
 export default async (req: ServerRequest, res: ServerResponse) => {
   const { uuid } = req.params;
 
-  const train = getFromRegistry(uuid);
+  const train = getTrain(uuid);
 
   if (!train) {
     throw createError(404, "Train not found");

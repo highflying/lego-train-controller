@@ -7,6 +7,11 @@
       "type": "npm",
       "script": "deploy",
       "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "problemMatcher": []
     }
   ]
 }

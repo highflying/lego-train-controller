@@ -7,21 +7,10 @@ const debug = Debug("detection");
 const ONE_SECOND = 1000;
 const MIN_DETECTION_INTERVAL = 1 * ONE_SECOND;
 
-interface ISensor {
+export interface ISensor {
   id: string;
   pin: number;
 }
-
-const sensors: ISensor[] = [
-  {
-    id: "platform1",
-    pin: 2
-  },
-  {
-    id: "platform2",
-    pin: 3
-  }
-];
 
 export interface IDetectionEvent {
   timestamp: number;
@@ -29,13 +18,13 @@ export interface IDetectionEvent {
 }
 
 class Sensors extends EventEmitter {
-  constructor() {
+  constructor(sensors: ISensor[]) {
     super();
 
-    this.initSensors();
+    this.initSensors(sensors);
   }
 
-  private initSensors() {
+  private initSensors(sensors: ISensor[]) {
     sensors.map(sensor => this.initSensor(sensor));
   }
 
