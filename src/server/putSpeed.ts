@@ -40,8 +40,9 @@ export default async (req: ServerRequest, res: ServerResponse) => {
   } else if (action === "stopPlatform3") {
     await new Promise(resolve => onClear("platform1", resolve));
     await switchPoint("siding", "curved");
-    await train.setSpeed(40);
+    await train.setSpeed(60);
     await new Promise(resolve => onDetection("platform1", resolve));
+    await train.setSpeed(40);
     await new Promise(resolve => onClear("platform1", resolve));
     await train.setSpeed(0);
   }
