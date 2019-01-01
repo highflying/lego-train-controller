@@ -40,12 +40,22 @@ class Sensors extends EventEmitter {
     let lastDetected = 0;
     let timeout: NodeJS.Timer | null;
 
+    const clearEmitter = () =>
+      setTimeout(() => {
+        debug(`Emitting clear event for ${sensor.id}`);
+        this.emit("clear", { timestamp: Date.now(), id: sensor.id });
+      }, 1000);
+
     button.on("interrupt", (level: boolean) => {
       const detected = !level;
 
       debug(`Detected event for ${sensor.id}, value=${level}`);
 
       if (!detected) {
+        if (!timeout) {
+          timeout = clearEmitter();
+        }
+
         return;
       }
 
@@ -67,10 +77,7 @@ class Sensors extends EventEmitter {
 
       lastDetected = timestamp;
 
-      timeout = setTimeout(() => {
-        debug(`Emitting clear event for ${sensor.id}`);
-        this.emit("clear", { timestamp: Date.now(), id: sensor.id });
-      }, 1000);
+      // timeout = clearEmitter();
     });
   }
 }
