@@ -8,25 +8,52 @@ interface IPoint {
   connection: "A" | "B";
 }
 
-const points: { [index: string]: IPoint } = {
-  siding: {
+const points: Array<IPoint> = [
+  {
     id: "siding",
     channel: 1,
     connection: "B"
   }
-};
+];
 
 const remote = "LEGO_Single_Output";
 
 const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const switchPoint = async (
-  id: string,
-  direction: "straight" | "curved"
-) => {
-  const point = points[id];
+const setup = () => {
+  points.forEach(setupPoint);
+};
+
+setup();
+
+type Direction = "straight" | "curved";
+interface IPointFunc {
+  (direction: Direction): Promise<void>;
+}
+
+const registry = new Map<string, IPointFunc>();
+
+const setupPoint = (point: IPoint) => {
   const prefix = `${point.channel}${point.connection}_`;
 
+  let state: Direction = "straight";
+
+  const func = async (direction: Direction) => {
+    if (direction === state) {
+      return;
+    }
+
+    await changePoint(prefix, direction);
+    state = direction;
+  };
+
+  registry.set(point.id, func);
+};
+
+const changePoint = async (
+  prefix: string,
+  direction: Direction
+): Promise<void> => {
   const directionCode = direction === "straight" ? "M" : "";
   const code1 = `${prefix}${directionCode}6`;
   const code2 = `${prefix}0`;
@@ -34,6 +61,19 @@ export const switchPoint = async (
   await sendCode(code1);
   await pause(50);
   await sendCode(code2);
+};
+
+export const switchPoint = async (
+  id: string,
+  direction: "straight" | "curved"
+) => {
+  const pointFunc = registry.get(id);
+
+  if (!pointFunc) {
+    return;
+  }
+
+  await pointFunc(direction);
 };
 
 const sendCode = (code: string) =>
