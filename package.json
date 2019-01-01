@@ -15,7 +15,7 @@
   "author": "Ben Rogers <ben@bdr.org>",
   "dependencies": {
     "@highflying/dev-tools": "^1.1.2",
-    "@highflying/node-poweredup": "^1.1.9",
+    "node-poweredup": "^1.1.9",
     "@types/debug": "0.0.31",
     "@types/noble": "0.0.38",
     "@types/pigpio": "^1.2.0",
