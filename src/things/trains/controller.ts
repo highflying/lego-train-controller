@@ -1,11 +1,15 @@
 import Debug from "debug";
 import { pause } from "../../utils";
+import { IHub } from "../../hardware/powered-up";
 
 const debug = Debug("controller");
+
+type Connection = "A" | "B";
 
 export interface ITrain {
   uuid: string;
   name: string;
+  connection: Connection;
   maxSpeed?: number;
   minSpeed?: number;
 }
@@ -24,7 +28,7 @@ export interface IController {
 }
 
 const controllerFactory = async (
-  hub: any,
+  hub: IHub,
   train: ITrain
 ): Promise<IController> => {
   let prevSpeed = 0;
@@ -49,7 +53,12 @@ const controllerFactory = async (
 
     debug(`Changing speed from ${prevSpeed} to ${speed} in ${duration} ms`);
     status = prevSpeed < speed ? "accelerating" : "decelerating";
-    const result = hub.rampMotorSpeed("A", prevSpeed, speed, duration);
+    const result = hub.rampMotorSpeed(
+      train.connection,
+      prevSpeed,
+      speed,
+      duration
+    );
 
     prevSpeed = speed;
 

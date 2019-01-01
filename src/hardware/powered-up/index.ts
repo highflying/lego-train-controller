@@ -1,8 +1,10 @@
-import * as PoweredUP from "node-poweredup";
+import { PoweredUP, PUPHub as IHub } from "node-poweredup";
 import Debug from "debug";
 import { EventEmitter } from "events";
 
 const debug = Debug("poweredUp");
+
+export { IHub };
 
 export default class PoweredUp extends EventEmitter {
   private uuids: string[];
@@ -12,11 +14,11 @@ export default class PoweredUp extends EventEmitter {
 
     this.uuids = uuids;
 
-    const poweredUP = new PoweredUP.PoweredUP();
+    const poweredUP = new PoweredUP();
 
-    poweredUP.on("discover", async (hub: any) => {
+    poweredUP.on("discover", async (hub: IHub) => {
       try {
-        const index = this.uuids.findIndex(hub.uuid);
+        const index = this.uuids.findIndex(uuid => uuid === hub.uuid);
 
         if (index === -1) {
           return;

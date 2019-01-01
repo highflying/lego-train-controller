@@ -39,31 +39,43 @@ export type IAction =
   | IEmergencyStopAction;
 type IActions = Array<IAction>;
 
-export default async (actions: IActions) =>
-  Bluebird.each(actions, async action => {
-    await runAction(action);
-  });
+// const actions: { [index: string]: (action: IAction) => Promise<any> } = {
+const definedActions = {
+  onClear: (action: IDetectionAction) =>
+    new Promise(resolve => onClear(action.id, resolve)),
 
-const runAction = async (action: IAction) => {
-  if (action.type === "onClear") {
-    await new Promise(resolve => onClear(action.id, resolve));
-  } else if (action.type === "onDetection") {
-    await new Promise(resolve => onDetection(action.id, resolve));
-  } else if (action.type === "setSpeed") {
+  onDetection: (action: IDetectionAction) =>
+    new Promise(resolve => onDetection(action.id, resolve)),
+
+  setSpeed: (action: ISetSpeedAction) => {
     const train = getTrain(action.id);
-    if (train) {
-      await train.setSpeed(action.speed);
+    if (!train) {
+      return;
     }
-  } else if (action.type === "switchPoint") {
-    await switchPoint(action.id, action.setting);
-  } else if (action.type === "pause") {
-    await pause(action.ms);
-  } else if (action.type === "emergencyStop") {
+
+    return train.setSpeed(action.speed);
+  },
+
+  switchPoint: (action: ISwitchPointAction) =>
+    switchPoint(action.id, action.setting),
+
+  pause: (action: IPauseAction) => pause(action.ms),
+
+  emergencyStop: (action: IEmergencyStopAction) => {
     const train = getTrain(action.id);
-    if (train) {
-      await train.emergencyStop();
+    if (!train) {
+      return;
     }
+
+    return train.emergencyStop();
   }
+};
 
-  return;
+export default async (actions: IActions) =>
+  Bluebird.each(actions, action => runAction(action));
+
+const runAction = (action: IAction) => {
+  const func = definedActions[action.type] as (action: IAction) => Promise<any>;
+
+  return func(action);
 };

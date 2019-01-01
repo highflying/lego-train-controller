@@ -30,6 +30,7 @@ const config: IConfig = {
     {
       uuid: "90842b0a568f",
       name: "Passenger Train",
+      connection: "A",
       maxSpeed: 80,
       minSpeed: -60
     }

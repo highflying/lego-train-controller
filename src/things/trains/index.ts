@@ -1,4 +1,4 @@
-import PoweredUp from "../../hardware/powered-up";
+import PoweredUp, { IHub } from "../../hardware/powered-up";
 
 import controllerFactory, { ITrain, IController } from "./controller";
 import Debug from "debug";
@@ -12,7 +12,7 @@ const initTrains = async (config: ITrain[]) => {
   const uuids = config.map(train => train.uuid);
 
   const poweredUp = new PoweredUp(uuids);
-  poweredUp.on("hubConnected", async (hub: any) => {
+  poweredUp.on("hubConnected", async (hub: IHub) => {
     try {
       const train = config.find(train => train.uuid === hub.uuid);
 
