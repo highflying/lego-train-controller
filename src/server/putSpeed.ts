@@ -3,6 +3,7 @@ import { send, createError } from "micro";
 import { getFromRegistry } from "../powered-up/registry";
 import { onDetection, onClear } from "../sensors";
 import { switchPoint } from "../power-functions";
+import Bluebird from "bluebird";
 
 // const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -72,11 +73,10 @@ interface ISetSpeedAction {
 type IAction = ISwitchPointAction | IDetectionAction | ISetSpeedAction;
 type IActions = Array<IAction>;
 
-const runActions = async (actions: IActions) => {
-  actions.forEach(async action => {
+const runActions = async (actions: IActions) =>
+  Bluebird.each(actions, async action => {
     await runAction(action);
   });
-};
 
 const runAction = async (action: IAction) => {
   if (action.type === "onClear") {
