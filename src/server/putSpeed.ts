@@ -4,7 +4,7 @@ import { getFromRegistry } from "../powered-up/registry";
 import { onDetection, onClear } from "../sensors";
 import { switchPoint } from "../power-functions";
 
-const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+// const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default async (req: ServerRequest, res: ServerResponse) => {
   const { uuid } = req.params;
