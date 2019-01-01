@@ -3,7 +3,6 @@ import { send, createError } from "micro";
 import { getFromRegistry } from "../powered-up/registry";
 import { onDetection, onClear } from "../sensors";
 import { switchPoint } from "../power-functions";
-import train from "../powered-up/trains/passenger";
 
 // const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
