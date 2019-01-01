@@ -1,4 +1,4 @@
-import * as PoweredUP from "@highflying/node-poweredup";
+import * as PoweredUP from "node-poweredup";
 // import keypress from "keypress";
 import trains from "./trains";
 // import handleAction from "./actions";
