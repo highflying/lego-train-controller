@@ -23,37 +23,27 @@ export default async (req: ServerRequest, res: ServerResponse) => {
   } else if (emergencyStop === "1") {
     train.emergencyStop();
   } else if (action === "stopPlatform1") {
-    console.log("Reversing");
     await train.setSpeed(-40);
-    console.log("Detecting");
     await new Promise(resolve => onDetection("platform1", resolve));
-    console.log("Waiting for clear");
     await new Promise(resolve => onClear("platform1", resolve));
-    console.log("Switching Point");
     await switchPoint("siding", "curved");
-    console.log("Going forward");
     await train.setSpeed(40);
-    console.log("Detecting");
     await new Promise(resolve => onDetection("platform1", resolve));
-    console.log("Waiting for clear");
     await new Promise(resolve => onClear("platform1", resolve));
-    console.log("Stopping");
     await train.setSpeed(0);
-
-    // onDetection("platform1", event => {
-    //   console.log(event);
-    //   train.setSpeed(0);
-    //   // await train.setSpeed(-30);
-    // });
   } else if (action === "stopPlatform2") {
-    onDetection("platform2", async event => {
-      console.log(event);
-      const currentSpeed = train.getSpeed();
-      await train.setSpeed(-1 * currentSpeed);
-      // await train.setSpeed(0);
-      await pause(5000);
-      await train.setSpeed(currentSpeed);
-    });
+    await train.setSpeed(-40);
+    await new Promise(resolve => onDetection("platform1", resolve));
+    await new Promise(resolve => onClear("platform1", resolve));
+    await switchPoint("siding", "straight");
+    await train.setSpeed(60);
+  } else if (action === "stopPlatform3") {
+    await new Promise(resolve => onClear("platform1", resolve));
+    await switchPoint("siding", "curved");
+    await train.setSpeed(40);
+    await new Promise(resolve => onDetection("platform1", resolve));
+    await new Promise(resolve => onClear("platform1", resolve));
+    await train.setSpeed(0);
   }
 
   return send(res, 200, {});

@@ -56,30 +56,32 @@ class Sensors extends EventEmitter {
 
       debug(`Detected event for ${sensor.id}, value=${level}`);
 
-      if (detected) {
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-
-        const timestamp = Date.now();
-
-        if (timestamp - lastDetected >= MIN_DETECTION_INTERVAL) {
-          const event: IDetectionEvent = { timestamp, id: sensor.id };
-          this.emit("detection", event);
-
-          debug(`Emitting detection event for ${sensor.id}`);
-        } else {
-          debug(`Previous detection was too recent for ${sensor.id}`);
-        }
-
-        lastDetected = timestamp;
-
-        timeout = setTimeout(() => {
-          debug(`Emitting clear event for ${sensor.id}`);
-          this.emit("clear", { timestamp: Date.now(), id: sensor.id });
-        }, 1000);
+      if (!detected) {
+        return;
       }
+
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+
+      const timestamp = Date.now();
+
+      if (timestamp - lastDetected >= MIN_DETECTION_INTERVAL) {
+        const event: IDetectionEvent = { timestamp, id: sensor.id };
+        this.emit("detection", event);
+
+        debug(`Emitting detection event for ${sensor.id}`);
+      } else {
+        debug(`Previous detection was too recent for ${sensor.id}`);
+      }
+
+      lastDetected = timestamp;
+
+      timeout = setTimeout(() => {
+        debug(`Emitting clear event for ${sensor.id}`);
+        this.emit("clear", { timestamp: Date.now(), id: sensor.id });
+      }, 1000);
     });
   }
 }
