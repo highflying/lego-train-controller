@@ -20,12 +20,6 @@ const remote = "LEGO_Single_Output";
 
 const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const setup = () => {
-  points.forEach(setupPoint);
-};
-
-setup();
-
 type Direction = "straight" | "curved";
 interface IPointFunc {
   (direction: Direction): Promise<void>;
@@ -78,3 +72,7 @@ export const switchPoint = async (
 
 const sendCode = (code: string) =>
   new Promise(resolve => lirc_node.irsend.send_once(remote, code, resolve));
+
+const setup = () => points.forEach(setupPoint);
+
+setup();
