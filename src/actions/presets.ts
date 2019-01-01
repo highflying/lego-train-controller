@@ -26,8 +26,6 @@ const presets: {
     { type: "setSpeed", id, speed: 60 },
     { type: "onDetection", id: "platform1" },
     { type: "setSpeed", id, speed: 40 },
-    { type: "pause", ms: 1000 },
-    { type: "setSpeed", id, speed: 30 },
     { type: "onClear", id: "platform1" },
     { type: "setSpeed", id, speed: 0 }
   ]
