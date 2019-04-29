@@ -6,7 +6,7 @@ import presets from "../actions/presets";
 
 export default async (req: ServerRequest, res: ServerResponse) => {
   const { uuid } = req.params;
-  const { action, speedStr } = req.query;
+  const { action, speedStr, red, green, blue } = req.query;
 
   const train = getTrain(uuid);
 
@@ -17,7 +17,10 @@ export default async (req: ServerRequest, res: ServerResponse) => {
   const params = {
     id: train.uuid,
     action,
-    speed: parseInt(speedStr, 10) || undefined
+    speed: parseInt(speedStr, 10) || undefined,
+    red: parseInt(red, 10) || undefined,
+    green: parseInt(green, 10) || undefined,
+    blue: parseInt(blue, 10) || undefined
   };
 
   const actions = getActions(params);
@@ -33,6 +36,9 @@ interface IParams {
   id: string;
   action: string;
   speed?: number;
+  red?: number;
+  green?: number;
+  blue?: number;
 }
 
 const getActions = (params: IParams) => {

@@ -14,6 +14,8 @@ const initTrains = async (config: ITrain[]) => {
   const poweredUp = new PoweredUp(uuids);
   poweredUp.on("hubConnected", async (hub: IHub) => {
     try {
+      debug(`Found hub ${hub.uuid}`);
+
       const train = config.find(train => train.uuid === hub.uuid);
 
       if (!train) {

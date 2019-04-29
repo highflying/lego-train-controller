@@ -28,6 +28,12 @@ export default class PoweredUp extends EventEmitter {
 
         await hub.connect();
 
+        setTimeout(() => {
+          console.log("A", hub.getPortDeviceType("A"));
+          console.log("B", hub.getPortDeviceType("B"));
+          console.log("hub", hub.getHubType());
+        }, 1000);
+
         this.emit("hubConnected", hub);
       } catch (err) {
         console.error(err);

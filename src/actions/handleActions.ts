@@ -31,12 +31,21 @@ interface IEmergencyStopAction {
   id: string;
 }
 
+interface ISetColourAction {
+  type: "setColour";
+  id: string;
+  red: number;
+  green: number;
+  blue: number;
+}
+
 export type IAction =
   | ISwitchPointAction
   | IDetectionAction
   | ISetSpeedAction
   | IPauseAction
-  | IEmergencyStopAction;
+  | IEmergencyStopAction
+  | ISetColourAction;
 type IActions = Array<IAction>;
 
 // const actions: { [index: string]: (action: IAction) => Promise<any> } = {
@@ -54,6 +63,15 @@ const definedActions = {
     }
 
     return train.setSpeed(action.speed);
+  },
+
+  setColour: (action: ISetColourAction) => {
+    const train = getTrain(action.id);
+    if (!train) {
+      return;
+    }
+
+    return train.setColour(action.red, action.green, action.blue);
   },
 
   switchPoint: (action: ISwitchPointAction) =>

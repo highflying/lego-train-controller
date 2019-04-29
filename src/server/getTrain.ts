@@ -18,6 +18,7 @@ export default async (req: ServerRequest, res: ServerResponse) => {
     batteryLevel: train.batteryLevel(),
     rssi: train.rssi(),
     current: train.current(),
+    voltage: train.voltage(),
     status: train.status()
   };
 

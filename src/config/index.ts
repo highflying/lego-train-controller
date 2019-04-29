@@ -28,7 +28,7 @@ const config: IConfig = {
   ],
   trains: [
     {
-      uuid: "90842b0a568f",
+      uuid: "e9908e0653b0419ebe2455d3f7e7d9fa",
       name: "Passenger Train",
       connection: "A",
       maxSpeed: 80,

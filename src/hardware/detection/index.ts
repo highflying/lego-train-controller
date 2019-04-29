@@ -1,6 +1,6 @@
-import { Gpio } from "pigpio";
 import { EventEmitter } from "events";
 import Debug from "debug";
+import { isRaspberryPi } from "../../utils";
 
 const debug = Debug("detection");
 
@@ -21,20 +21,24 @@ class Sensors extends EventEmitter {
   constructor(sensors: ISensor[]) {
     super();
 
-    this.initSensors(sensors);
+    if (isRaspberryPi()) {
+      import("pigpio").then(gpio => {
+        this.initSensors(gpio, sensors);
+      });
+    }
   }
 
-  private initSensors(sensors: ISensor[]) {
-    sensors.map(sensor => this.initSensor(sensor));
+  private initSensors(gpio: any, sensors: ISensor[]) {
+    sensors.map(sensor => this.initSensor(gpio, sensor));
   }
 
-  private initSensor(sensor: ISensor) {
+  private initSensor(gpio: any, sensor: ISensor) {
     debug(`Initialising sensor ${sensor.pin}/${sensor.id}`);
 
-    const button = new Gpio(sensor.pin, {
-      mode: Gpio.INPUT,
-      pullUpDown: Gpio.PUD_DOWN,
-      edge: Gpio.EITHER_EDGE
+    const button = new gpio.Gpio(sensor.pin, {
+      mode: gpio.Gpio.INPUT,
+      pullUpDown: gpio.Gpio.PUD_DOWN,
+      edge: gpio.Gpio.EITHER_EDGE
     });
 
     let lastDetected = 0;

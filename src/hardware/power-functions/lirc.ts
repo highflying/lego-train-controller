@@ -1,6 +1,9 @@
 import lirc_node from "lircv0.9.4_node";
+import { isRaspberryPi } from "../../utils";
 
-lirc_node.init();
+if (isRaspberryPi()) {
+  lirc_node.init();
+}
 
 const remote = "LEGO_Single_Output";
 

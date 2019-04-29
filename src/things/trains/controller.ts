@@ -25,6 +25,7 @@ export interface IController {
   batteryLevel: () => number;
   rssi: () => number;
   current: () => number;
+  voltage: () => number;
 }
 
 const controllerFactory = async (
@@ -51,6 +52,14 @@ const controllerFactory = async (
     const duration =
       ms !== undefined && ms !== null ? ms : Math.abs(speed - prevSpeed) * 50;
 
+    if (speed > 0) {
+      if (prevSpeed >= 0) {
+        hub.setLightBrightness("B", 100);
+      } else {
+        setTimeout(() => hub.setLightBrightness("B", 100), duration / 2);
+      }
+    }
+
     debug(`Changing speed from ${prevSpeed} to ${speed} in ${duration} ms`);
     status = prevSpeed < speed ? "accelerating" : "decelerating";
     const result = hub.rampMotorSpeed(
@@ -60,12 +69,18 @@ const controllerFactory = async (
       duration
     );
 
+    if (speed < 0) {
+      setTimeout(() => hub.setLightBrightness("B", 0), duration / 2);
+    }
+
     prevSpeed = speed;
 
     return result.then(() => {
       status = speed ? "running" : "stopped";
     });
   };
+
+  const setColour = hub.setLEDRGB.bind(hub);
 
   return {
     uuid: hub.uuid,
@@ -78,10 +93,11 @@ const controllerFactory = async (
       await setSpeed(0, 0);
     },
     setSpeed,
-    setColour: hub.setLEDRGB.bind(hub),
+    setColour,
     batteryLevel: () => hub.batteryLevel,
     rssi: () => hub.rssi,
     current: () => hub.current,
+    voltage: () => hub.voltage,
     getSpeed: () => prevSpeed
   };
 };
